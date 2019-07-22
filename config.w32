@@ -1,0 +1,7 @@
+ARG_ENABLE('aeop', 'aeop support', 'no');
+
+if (PHP_AEOP != 'no') {
+	AC_DEFINE('HAVE_AEOP', 1, 'aeop support enabled');
+
+	EXTENSION('aeop', 'aeop.c', null, '/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1');
+}
