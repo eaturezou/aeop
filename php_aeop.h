@@ -13,3 +13,5 @@ ZEND_TSRMLS_CACHE_EXTERN()
 # endif
 
 #endif	/* PHP_AEOP_H */
+
+void hashTableDestructor(void * element);

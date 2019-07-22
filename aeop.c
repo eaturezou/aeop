@@ -16,9 +16,26 @@
 #endif
 
 
+static zend_function_entry class_methods[] = {
+    {NULL, NULL, NULL}
+};
+
+zend_class_entry * class;
+
+
+
 PHP_MINIT_FUNCTION(aeop)
 {
+    zend_class_entry ce;
+    INIT_CLASS_ENTRY(ce, "MyClass", class_methods);
+    class = zend_register_internal_class(&ce TSRMLS_CACHE);
+    zend_declare_property(&ce, "name", sizeof("name"), NULL, ZEND_ACC_PUBLIC);
     printf("Module aeop init");
+}
+
+ZEND_METHOD(MyClass, __construct)
+{
+    printf("oh it is a new MyClass!");
 }
 
 /* request init 函数
@@ -53,14 +70,41 @@ PHP_MINFO_FUNCTION(aeop)
 	php_info_print_table_end();
 }
 
-PHP_FUNCTION(start_pool)
+/**
+ * aeop($title, $message);
+ * @param execute_data
+ * @param return_value
+ */
+PHP_FUNCTION(aeop_test)
 {
-    zval * param;
-    if (zend_parse_parameter(ZEND_NUM_ARGS() TSRMLS_CACHE, param, "l")) {
+    char * title;
+    int titleLength;
+    char * message;
+    int messageLength;
+
+    if (zend_parse_parameter(ZEND_NUM_ARGS() TSRMLS_CACHE, "ss", &title, &titleLength, &message, &messageLength) == FAILURE) {
         RETURN_NULL();
     }
+    HashTable * hs;
+    ALLOC_HASHTABLE(hs);
+    zend_hash_init(hs, 16, NULL, hashTableDestructor, 0);
+    zend_string * key = zend_string_init("abc", sizeof("abc"), 0);
+    zval * data = emalloc(sizeof(long));
+    ZVAL_LONG(data, 123412423);
+    zend_hash_add(hs, key, data);
 
+    char * string;
+    if (sprintf("%s%s", string, title, message) == 0) {
+        RETURN_NULL();
+    }
+    php_printf("%s", string);
     RETURN_TRUE;
+}
+
+
+void hashTableDestructor(void * element)
+{
+
 }
 /* }}} */
 
