@@ -35,3 +35,5 @@ tests/*/*.log
 tests/*/*.sh
 /.idea/
 /cmake-build-debug/
+/tests/
+config.h.in~

@@ -5,10 +5,10 @@ dnl Remove where necessary.
 
 dnl If your extension references something external, use 'with':
 
-dnl PHP_ARG_WITH([aeop],
-dnl   [for aeop support],
-dnl   [AS_HELP_STRING([--with-aeop],
-dnl     [Include aeop support])])
+PHP_ARG_WITH([aeop],
+   [for aeop support],
+   [AS_HELP_STRING([--with-aeop],
+        [Include aeop support])])
 
 dnl Otherwise use 'enable':
 

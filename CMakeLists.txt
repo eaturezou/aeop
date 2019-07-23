@@ -10,7 +10,7 @@ add_executable(aeop
         php_aeop.h)
 
 #定义php源码路径，这里根据自己的真实路径来更改
-set(PHP_SOURCE E:/c_projects/php-src)
+set(PHP_SOURCE ~/c/php-src/)
 #引入php需要的扩展源码，这里也是根据自己需要的来更改
 include_directories(${PHP_SOURCE}/main)
 include_directories(${PHP_SOURCE}/Zend)
