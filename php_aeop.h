@@ -12,6 +12,6 @@ extern zend_module_entry aeop_module_entry;
 ZEND_TSRMLS_CACHE_EXTERN()
 # endif
 
-#endif	/* PHP_AEOP_H */
-
 void hashTableDestructor(void * element);
+
+#endif	/* PHP_AEOP_H */

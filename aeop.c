@@ -1,7 +1,7 @@
 /* aeop extension for PHP */
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+#include "config.h"
 #endif
 
 #include "php.h"
@@ -17,7 +17,7 @@
 
 ZEND_METHOD(MyClass, __construct)
 {
-    php_printf("oh it is a new MyClass!");
+    php_printf("oh it is a new MyClass!\n");
 }
 
 static zend_function_entry class_methods[] = {
@@ -28,10 +28,10 @@ static zend_function_entry class_methods[] = {
 PHP_MINIT_FUNCTION(aeop)
 {
     zend_class_entry ce;
-    INIT_CLASS_ENTRY(ce, "MyClass", class_methods);
+    INIT_CLASS_ENTRY(ce, "AeopWorker", class_methods);
     zend_register_internal_class(&ce);
-    //zend_declare_property(&ce, "name", sizeof("name"), NULL, ZEND_ACC_PUBLIC);
-    php_printf("Module aeop init");
+    //zend_declare_property(&ce, "name", 32, NULL, ZEND_ACC_PUBLIC);
+    php_printf("Module aeop init\n");
     return SUCCESS;
 }
 
@@ -50,7 +50,6 @@ PHP_RINIT_FUNCTION(aeop)
 #if defined(ZTS) && defined(COMPILE_DL_AEOP)
 	ZEND_TSRMLS_CACHE_UPDATE();
 #endif
-
 	return SUCCESS;
 }
 
@@ -122,13 +121,13 @@ static const zend_function_entry aeop_functions[] = {
 };
 /* }}} */
 
-/* {{{ aeop_module_entry
+/* define aeop extension
  */
 zend_module_entry aeop_module_entry = {
 	STANDARD_MODULE_HEADER,
 	"aeop",					/* Extension name */
 	aeop_functions,			/* zend_function_entry */
-	NULL,							/* PHP_MINIT - Module initialization */
+    PHP_MINIT(aeop),							/* PHP_MINIT - Module initialization */
 	NULL,							/* PHP_MSHUTDOWN - Module shutdown */
 	PHP_RINIT(aeop),			/* PHP_RINIT - Request initialization */
 	NULL,							/* PHP_RSHUTDOWN - Request shutdown */
