@@ -15,26 +15,106 @@
 	ZEND_PARSE_PARAMETERS_END()
 #endif
 
-ZEND_METHOD(MyClass, __construct)
-{
-    php_printf("oh it is a new MyClass!\n");
-}
+    ZEND_METHOD(MyClass, __construct)
+    {
+        php_printf("oh it is a new MyClass!\n");
+    }
 
-static zend_function_entry class_methods[] = {
-    ZEND_ME(MyClass, __construct, NULL, ZEND_ACC_PUBLIC)
-};
+    /* +---------------------------------
+     * | SortTree
+     * +---------------------------------
+     */
+    ZEND_METHOD(AeopSortTree, __construct)
+    {
+        php_printf("oh it is a new MyClass!\n");
+    }
+
+    ZEND_METHOD(AeopSortTree, minSort)
+    {
+
+    }
+
+    ZEND_METHOD(AeopSortTree, maxSort)
+    {
+
+    }
+
+    ZEND_METHOD(AeopSortTree, find)
+    {
+
+    }
+
+    /* +---------------------------------
+     * | SortTreeNode
+     * +---------------------------------
+     */
+    ZEND_METHOD(AeopSortTreeNode, __construct)
+    {
+
+    }
+
+    ZEND_METHOD(AeopSortTreeNode, getData)
+    {
+
+    }
+
+    ZEND_METHOD(AeopSortTreeNode, getLeftChild)
+    {
+
+    }
+
+    ZEND_METHOD(AeopSortTreeNode, getRightChild)
+    {
+
+    }
+
+    ZEND_METHOD(AeopSortTreeNode, isLeaf)
+    {
+
+    }
+
+
+    static zend_function_entry class_methods[] = {
+        ZEND_ME(MyClass, __construct, NULL, ZEND_ACC_PUBLIC)
+    };
+
+	static zend_function_entry sort_tree_methods[] = {
+            ZEND_ME(AeopSortTree, __construct, NULL, ZEND_ACC_PUBLIC)
+	        ZEND_ME(AeopSortTree, minSort, NULL, ZEND_ACC_PUBLIC)
+	        ZEND_ME(AeopSortTree, maxSort, NULL, ZEND_ACC_PUBLIC)
+	        ZEND_ME(AeopSortTree, find, NULL, ZEND_ACC_PUBLIC)
+	};
+
+	static zend_function_entry sort_tree_node_methods[] = {
+            ZEND_ME(AeopSortTreeNode, __construct, NULL, ZEND_ACC_PUBLIC)
+            ZEND_ME(AeopSortTreeNode, getData, NULL, ZEND_ACC_PUBLIC)
+            ZEND_ME(AeopSortTreeNode, getLeftChild, NULL, ZEND_ACC_PUBLIC)
+            ZEND_ME(AeopSortTreeNode, getRightChild, NULL, ZEND_ACC_PUBLIC)
+            ZEND_ME(AeopSortTreeNode, isLeaf, NULL, ZEND_ACC_PUBLIC)
+	};
 
 
 PHP_MINIT_FUNCTION(aeop)
 {
-    zend_class_entry ce;
+    zend_class_entry ce, sort_tree, sort_tree_node;
     INIT_CLASS_ENTRY(ce, "AeopWorker", class_methods);
+    INIT_CLASS_ENTRY(sort_tree, "AeopSortTree", sort_tree_methods)
+    INIT_CLASS_ENTRY(sort_tree_node, "AeopSortTreeNode", sort_tree_node_methods)
     zend_register_internal_class(&ce);
-    //zend_declare_property(&ce, "name", 32, NULL, ZEND_ACC_PUBLIC);
-    php_printf("Module aeop init\n");
+    zend_register_internal_class(&sort_tree);
+    zend_register_internal_class(&sort_tree_node);
+
+    zval *sort_tree_length = emalloc(sizeof(zval));
+    zval *sort_tree_height = emalloc(sizeof(zval));
+    zval *sort_tree_tree = emalloc(sizeof(zval));
+
+    zend_declare_property(&sort_tree, "length", sizeof(zval), sort_tree_length, ZEND_ACC_PROTECTED);
+    zend_declare_property(&sort_tree, "height", sizeof(zval), sort_tree_height, ZEND_ACC_PROTECTED);
+    zend_declare_property(&sort_tree, "tree", sizeof(zval), sort_tree_tree, ZEND_ACC_PROTECTED);
+
+
     return SUCCESS;
 }
-
 
 
 
