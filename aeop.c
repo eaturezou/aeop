@@ -14,20 +14,66 @@
 	ZEND_PARSE_PARAMETERS_START(0, 0) \
 	ZEND_PARSE_PARAMETERS_END()
 #endif
+
+	void start_pthread()
+	{
+
+	}
+
     /* +---------------------------------
      * | AeopPool
      * +---------------------------------
      */
-    ZEND_BEGIN_ARG_INFO(aeop_ctor_info, NULL)
+
+    //AeopPool::__construct
+    ZEND_BEGIN_ARG_INFO(aeop_pool_ctor_info, NULL)
         ZEND_ARG_INFO(0, task_num)
+        ZEND_ARG_INFO(0, master_name)
     ZEND_END_ARG_INFO()
     ZEND_METHOD(AeopPool, __construct)
     {
+    	zend_long task_num;
+    	zend_string* master_name;
+    	if (zend_parse_parameters(ZEND_NUM_ARGS(), "lS", &task_num, &master_name) == FAILURE) {
+    		//todo throw exception
+    		RETURN_FALSE;
+    	}
+		struct poolMaster* master = (struct poolMaster*)emalloc(sizeof(struct poolMaster) + task_num * sizeof(ThreadItem));
+    	master->thread_num = task_num;
+    	master->pool_name = master_name->val;
+    	while (task_num -- > 0) {
+			pthread_t t;
+			int argument;
+			if (pthread_create(&t, NULL, (void *)&start_pthread, (void *)&argument) < 0) {
+				//todo throw exception
+			}
+			ThreadItem* threadItem = (ThreadItem *)emalloc(sizeof(ThreadItem));
+			threadItem->thread_id = t;
+			threadItem->status = THREAD_SLEEP;
+			master->pool_name ++;
+			master->thread[master->thread_num - 1] = threadItem;
+    	}
 
     }
 
+    //AeopPool::addTask
+    ZEND_BEGIN_ARG_INFO(aeop_pool_add_task_info, NULL)
+    	ZEND_ARG_INFO(FALSE, callback)
+    ZEND_END_ARG_INFO()
+    ZEND_METHOD(AeopPool, addTask)
+	{
+    	zend_fcall_info callback;
+    	zend_fcall_info_cache callback_cache;
+    	if (zend_parse_parameters(ZEND_NUM_ARGS(), "f", &callback, &callback_cache) == FAILURE) {
+    		//todo throw exception
+    		RETURN_FALSE;
+    	}
+
+	}
+
 	static const zend_function_entry sort_tree_node_methods[] = {
-            ZEND_ME(AeopPool, __construct, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
+            ZEND_ME(AeopPool, __construct, aeop_pool_ctor_info, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
+            ZEND_ME(AeopPool, addTask, aeop_pool_add_task_info, ZEND_ACC_PUBLIC)
             ZEND_FE_END
 	};
 
