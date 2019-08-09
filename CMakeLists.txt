@@ -14,3 +14,5 @@ include_directories(${PHP_SOURCE}/Zend)
 include_directories(${PHP_SOURCE}/sapi)
 include_directories(${PHP_SOURCE}/pear)
 include_directories(${PHP_SOURCE})
+
+add_custom_target(makefile COMMAND make && sudo make install WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})

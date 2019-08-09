@@ -7,6 +7,12 @@ extern zend_module_entry aeop_module_entry;
 # define phpext_aeop_ptr &aeop_module_entry
 
 #include <pthread.h>
+#include <signal.h>
+#include <sys/prctl.h>
+#include <sys/epoll.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 # define PHP_AEOP_VERSION "0.1.0"
 #define THREAD_SLEEP 0
@@ -28,6 +34,8 @@ struct poolMaster {
     char* pool_name;
     ThreadItem* thread[1];
 };
+
+void handler_sigchld();
 
 
 # if defined(ZTS) && defined(COMPILE_DL_AEOP)
